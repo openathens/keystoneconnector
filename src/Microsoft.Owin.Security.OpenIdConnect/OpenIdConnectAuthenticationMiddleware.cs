@@ -91,13 +91,17 @@ namespace Microsoft.Owin.Security.OpenIdConnect
                         throw new InvalidOperationException("The MetadataAddress or Authority must use HTTPS unless disabled for development by setting RequireHttpsMetadata=false.");
                     }
 
-                    var backchannel = new HttpClient(ResolveHttpMessageHandler(Options));
-                    backchannel.DefaultRequestHeaders.UserAgent.ParseAdd("Microsoft ASP.NET Core OpenIdConnect middleware");
-                    backchannel.Timeout = Options.BackchannelTimeout;
-                    backchannel.MaxResponseContentBufferSize = 1024 * 1024 * 10; // 10 MB
+                    if (Options.Backchannel == null)
+                    {
+                        var backchannel = new HttpClient(ResolveHttpMessageHandler(Options));
+                        backchannel.DefaultRequestHeaders.UserAgent.ParseAdd("Microsoft ASP.NET Core OpenIdConnect middleware");
+                        backchannel.Timeout = Options.BackchannelTimeout;
+                        backchannel.MaxResponseContentBufferSize = 1024 * 1024 * 10; // 10 MB
+                        Options.Backchannel = backchannel;
+                    }
 
                     Options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(Options.MetadataAddress, new OpenIdConnectConfigurationRetriever(),
-                        new HttpDocumentRetriever(backchannel) { RequireHttps = Options.RequireHttpsMetadata });
+                        new HttpDocumentRetriever(Options.Backchannel) { RequireHttps = Options.RequireHttpsMetadata });
                 }
             }
 

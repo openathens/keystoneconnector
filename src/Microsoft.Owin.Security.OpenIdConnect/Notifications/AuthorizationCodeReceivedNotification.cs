@@ -47,5 +47,11 @@ namespace Microsoft.Owin.Security.Notifications
         /// <remarks>This is the redirect_uri that was sent in the id_token + code OpenIdConnectRequest.</remarks>
         [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings", Justification = "user controlled, not necessarily a URI")]
         public string RedirectUri { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="OpenIdConnectMessage"/> that is about to be sent to the token endpoint to redeem the authorization code
+        /// </summary>
+        /// <remarks>If you are redeeming the authorization code yourself, set HandledResponse=true to skip sending this message afterwards.</remarks>
+        public OpenIdConnectMessage TokenEndpointRequest { get; set; }
     }
 }
