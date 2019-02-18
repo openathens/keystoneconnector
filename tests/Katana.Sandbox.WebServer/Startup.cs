@@ -127,13 +127,13 @@ namespace Katana.Sandbox.WebServer
                 MetadataAddress = "https://login.windows.net/cdc690f9-b6b8-4023-813a-bae7143d1f87/FederationMetadata/2007-06/FederationMetadata.xml",
             });
 
-            app.UseOpenIdConnectAuthentication(new Microsoft.Owin.Security.OpenIdConnect.OpenIdConnectAuthenticationOptions()
-            {
-                Authority = Environment.GetEnvironmentVariable("oidc:authority"),
-                ClientId = Environment.GetEnvironmentVariable("oidc:clientid"),
-                RedirectUri = "https://localhost:44318/",
-                CookieManager = new SystemWebCookieManager()
-            });
+            //app.UseOpenIdConnectAuthentication(new Microsoft.Owin.Security.OpenIdConnect.OpenIdConnectAuthenticationOptions()
+            //{
+            //    Authority = Environment.GetEnvironmentVariable("oidc:authority"),
+            //    ClientId = Environment.GetEnvironmentVariable("oidc:clientid"),
+            //    RedirectUri = "https://localhost:44318/",
+            //    CookieManager = new SystemWebCookieManager()
+            //});
 
             /*
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions

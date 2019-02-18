@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Owin.Security.OpenIdConnect {
+namespace OpenAthens.Owin.Security.OpenIdConnect {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Microsoft.Owin.Security.OpenIdConnect {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Owin.Security.OpenIdConnect.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpenAthens.Owin.Security.OpenIdConnect.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

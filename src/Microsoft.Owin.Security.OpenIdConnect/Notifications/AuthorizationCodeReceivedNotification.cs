@@ -4,9 +4,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.Owin.Security.OpenIdConnect;
+using Microsoft.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Notifications;
+using OpenAthens.Owin.Security.OpenIdConnect;
 
-namespace Microsoft.Owin.Security.Notifications
+namespace OpenAthens.Owin.Security.Notifications
 {
     /// <summary>
     /// This Notification can be used to be informed when an 'AuthorizationCode' is received over the OpenIdConnect protocol.

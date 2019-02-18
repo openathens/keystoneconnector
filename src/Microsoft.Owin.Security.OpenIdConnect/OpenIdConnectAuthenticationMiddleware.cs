@@ -6,13 +6,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.Owin;
 using Microsoft.Owin.Logging;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Infrastructure;
 using Owin;
 
-namespace Microsoft.Owin.Security.OpenIdConnect
+namespace OpenAthens.Owin.Security.OpenIdConnect
 {
     /// <summary>
     /// OWIN middleware for obtaining identities using OpenIdConnect protocol.

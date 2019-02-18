@@ -3,7 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Microsoft.Owin.Security.OpenIdConnect
+namespace OpenAthens.Owin.Security.OpenIdConnect
 {
     /// <summary>
     /// Default values related to OpenIdConnect authentication middleware

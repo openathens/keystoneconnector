@@ -7,8 +7,8 @@
     <ProjectGuid>{AA80B4A3-C885-4A7E-AF1A-FC3E89611988}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Owin.Security.OpenIdConnect</RootNamespace>
-    <AssemblyName>Microsoft.Owin.Security.OpenIdConnect</AssemblyName>
+    <RootNamespace>OpenAthens.Owin.Security.OpenIdConnect</RootNamespace>
+    <AssemblyName>OpenAthens.Owin.Security.OpenIdConnect</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -35,7 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Microsoft.Owin.Security.OpenIdConnect.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\OpenAthens.Owin.Security.OpenIdConnect.xml</DocumentationFile>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\..\build\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -60,6 +60,12 @@
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.IdentityModel.Tokens.5.3.0\lib\net45\Microsoft.IdentityModel.Tokens.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -107,17 +113,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Owin.Security\Microsoft.Owin.Security.csproj">
-      <Project>{aaaf8157-1e33-4d6c-8319-3b304d018005}</Project>
-      <Name>Microsoft.Owin.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Owin\Microsoft.Owin.csproj">
-      <Project>{0db69cae-b0bc-4688-9467-66b4c1023d3f}</Project>
-      <Name>Microsoft.Owin</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Microsoft.Owin.Security.OpenIdConnect.nuspec">
+    <None Include="OpenAthens.Owin.Security.OpenIdConnect.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config">

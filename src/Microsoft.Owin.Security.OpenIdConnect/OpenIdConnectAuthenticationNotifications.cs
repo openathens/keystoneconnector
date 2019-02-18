@@ -5,8 +5,9 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Owin.Security.Notifications;
+using OpenAthens.Owin.Security.Notifications;
 
-namespace Microsoft.Owin.Security.OpenIdConnect
+namespace OpenAthens.Owin.Security.OpenIdConnect
 {
     /// <summary>
     /// Specifies events which the <see cref="OpenIdConnectAuthenticationMiddleware"></see> invokes to enable developer control over the authentication process. />

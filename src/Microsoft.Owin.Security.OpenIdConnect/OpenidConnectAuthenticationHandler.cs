@@ -16,12 +16,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin;
 using Microsoft.Owin.Logging;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.Notifications;
 using Newtonsoft.Json.Linq;
+using OpenAthens.Owin.Security.Notifications;
 
-namespace Microsoft.Owin.Security.OpenIdConnect
+namespace OpenAthens.Owin.Security.OpenIdConnect
 {
     /// <summary>
     /// A per-request authentication handler for the OpenIdConnectAuthenticationMiddleware.

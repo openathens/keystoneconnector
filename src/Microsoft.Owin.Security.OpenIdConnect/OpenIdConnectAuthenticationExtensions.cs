@@ -3,9 +3,9 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.Owin.Security.OpenIdConnect;
+using Owin;
 
-namespace Owin
+namespace OpenAthens.Owin.Security.OpenIdConnect
 {
     /// <summary>
     /// Extension methods for using <see cref="OpenIdConnectAuthenticationMiddleware"/>

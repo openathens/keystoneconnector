@@ -8,9 +8,11 @@ using System.Net.Http;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin;
 using Microsoft.Owin.Infrastructure;
+using Microsoft.Owin.Security;
 
-namespace Microsoft.Owin.Security.OpenIdConnect
+namespace OpenAthens.Owin.Security.OpenIdConnect
 {
     /// <summary>
     /// Configuration options for <see cref="OpenIdConnectAuthenticationOptions"/>
@@ -47,11 +49,11 @@ namespace Microsoft.Owin.Security.OpenIdConnect
         /// <para>UseTokenLifetime: true.</para>
         /// </remarks>
         /// <param name="authenticationType"> will be used to when creating the <see cref="System.Security.Claims.ClaimsIdentity"/> for the AuthenticationType property.</param>
-        [SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Microsoft.Owin.Security.OpenIdConnect.OpenIdConnectAuthenticationOptions.set_Caption(System.String)", Justification = "Not a LOC field")]
+        [SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OpenAthens.Owin.Security.OpenIdConnect.OpenIdConnectAuthenticationOptions.set_Caption(System.String)", Justification = "Not a LOC field")]
         public OpenIdConnectAuthenticationOptions(string authenticationType)
             : base(authenticationType)
         {
-            AuthenticationMode = Security.AuthenticationMode.Active;
+            AuthenticationMode = AuthenticationMode.Active;
             BackchannelTimeout = TimeSpan.FromMinutes(1);
             Caption = OpenIdConnectAuthenticationDefaults.Caption;
             ProtocolValidator = new OpenIdConnectProtocolValidator()
