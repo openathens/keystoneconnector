@@ -176,6 +176,11 @@ namespace Microsoft.Owin.Security.OpenIdConnect
         public bool RefreshOnIssuerKeyNotFound { get; set; }
 
         /// <summary>
+        /// Gets or sets if additional claims should be retrieved from the user_info endpoint after initial authentication
+        /// </summary>
+        public bool GetClaimsFromUserInfoEndpoint { get; set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="OpenIdConnectAuthenticationNotifications"/> to notify when processing OpenIdConnect messages.
         /// </summary>
         public OpenIdConnectAuthenticationNotifications Notifications { get; set; }

@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.ExceptionServices;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -18,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.Notifications;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Owin.Security.OpenIdConnect
 {
@@ -285,6 +287,8 @@ namespace Microsoft.Owin.Security.OpenIdConnect
                 ClaimsPrincipal principal = null;
                 AuthenticationTicket ticket = null;
                 string nonce = null;
+                OpenIdConnectMessage tokenEndpointResponse = null;
+                JwtSecurityToken tokenEndpointJwt = null;
 
                 // Copy and augment to avoid cross request race conditions for updated configurations.
                 TokenValidationParameters tvp = Options.TokenValidationParameters.Clone();
@@ -374,7 +378,7 @@ namespace Microsoft.Owin.Security.OpenIdConnect
                         Code = openIdConnectMessage.Code,
                         GrantType = OpenIdConnectGrantTypes.AuthorizationCode,
                         RedirectUri = properties.Dictionary.ContainsKey(OpenIdConnectAuthenticationDefaults.RedirectUriUsedForCodeKey) ?
-                        properties.Dictionary[OpenIdConnectAuthenticationDefaults.RedirectUriUsedForCodeKey] : string.Empty
+                            properties.Dictionary[OpenIdConnectAuthenticationDefaults.RedirectUriUsedForCodeKey] : string.Empty
                     };
 
                     // Run AuthorizationCodeReceived notification
@@ -404,7 +408,7 @@ namespace Microsoft.Owin.Security.OpenIdConnect
                     if (ticket == null)
                     {
                         // Redeem token using the received authorization code
-                        OpenIdConnectMessage tokenEndpointResponse = await RedeemAuthorizationCodeAsync(tokenEndpointRequest);
+                        tokenEndpointResponse = await RedeemAuthorizationCodeAsync(tokenEndpointRequest);
 
                         // Run SecurityTokenReceived notification
                         {
@@ -431,7 +435,6 @@ namespace Microsoft.Owin.Security.OpenIdConnect
 
                         // At least a cursory validation is required on the new IdToken, even if we've already validated the one from the authorization response.
                         // And we'll want to validate the new JWT in ValidateTokenResponse.
-                        JwtSecurityToken tokenEndpointJwt = null;
                         principal = ValidateToken(tokenEndpointResponse.IdToken, properties, tvp, out tokenEndpointJwt);
 
                         ticket = new AuthenticationTicket(principal.Identity as ClaimsIdentity, properties);
@@ -462,6 +465,15 @@ namespace Microsoft.Owin.Security.OpenIdConnect
                             ticket = securityTokenValidatedNotification.AuthenticationTicket;
                         }
                     }
+                }
+
+                if (Options.GetClaimsFromUserInfoEndpoint)
+                {
+                    await GetUserInformationAsync(
+                        tokenEndpointResponse ?? openIdConnectMessage, 
+                        tokenEndpointJwt ?? jwt, 
+                        principal, 
+                        properties);
                 }
 
                 return ticket;
@@ -740,7 +752,104 @@ namespace Microsoft.Owin.Security.OpenIdConnect
                 return OpenIdConnectAuthenticationDefaults.CookiePrefix + OpenIdConnectAuthenticationDefaults.Nonce + Convert.ToBase64String(hash.ComputeHash(Encoding.UTF8.GetBytes(nonce)));
             }
         }
- 
+
+        /// <summary>
+        /// Goes to UserInfo endpoint to retrieve additional claims and add any unique claims to the given identity.
+        /// </summary>
+        /// <param name="message">message that is being processed</param>
+        /// <param name="jwt">The <see cref="JwtSecurityToken"/>.</param>
+        /// <param name="principal">The claims principal and identities.</param>
+        /// <param name="properties">The authentication properties.</param>
+        protected virtual async Task GetUserInformationAsync(
+            OpenIdConnectMessage message, JwtSecurityToken jwt,
+            ClaimsPrincipal principal, AuthenticationProperties properties)
+        {
+            var userInfoEndpoint = _configuration.UserInfoEndpoint;
+
+            if (string.IsNullOrEmpty(userInfoEndpoint))
+            {
+                _logger.WriteVerbose("UserInfoEndpoint is not set. Claims cannot be retrieved.");
+                return;
+            }
+            if (string.IsNullOrEmpty(message.AccessToken))
+            {
+                _logger.WriteVerbose("The access_token is not available. Claims cannot be retrieved.");
+                return;
+            }
+            _logger.WriteVerbose("Retrieving claims from the user info endpoint.");
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, userInfoEndpoint);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", message.AccessToken);
+            var responseMessage = await Options.Backchannel.SendAsync(requestMessage);
+            responseMessage.EnsureSuccessStatusCode();
+            var userInfoResponse = await responseMessage.Content.ReadAsStringAsync();
+
+            JObject user;
+            var contentType = responseMessage.Content.Headers.ContentType;
+            if (contentType.MediaType.Equals("application/json", StringComparison.OrdinalIgnoreCase))
+            {
+                user = JObject.Parse(userInfoResponse);
+            }
+            else if (contentType.MediaType.Equals("application/jwt", StringComparison.OrdinalIgnoreCase))
+            {
+                var userInfoEndpointJwt = new JwtSecurityToken(userInfoResponse);
+                user = JObject.Parse(userInfoEndpointJwt.Payload.SerializeToJson());
+            }
+            else
+            {
+                throw new OpenIdConnectProtocolException(string.Format(
+                    "Failed to parse token response body as JSON. Status Code: {0}. Content-Type: {1}",
+                    (int)responseMessage.StatusCode, responseMessage.Content.Headers.ContentType));
+            }
+
+            //// Run UserInformationReceived notification
+            //{
+            //    var userInformationReceivedContext = await Options.Notifications.RunUserInformationReceivedEventAsync(principal, properties, message, user);
+            //    if (userInformationReceivedContext.Result != null)
+            //    {
+            //        return userInformationReceivedContext.Result;
+            //    }
+            //    principal = userInformationReceivedContext.Principal;
+            //    properties = userInformationReceivedContext.Properties;
+            //}
+
+            Options.ProtocolValidator.ValidateUserInfoResponse(new OpenIdConnectProtocolValidationContext()
+            {
+                UserInfoEndpointResponse = userInfoResponse,
+                ValidatedIdToken = jwt,
+            });
+
+            var identity = (ClaimsIdentity) principal.Identity;
+            foreach (var claim in identity.Claims)
+            {
+                // If this claimType is mapped by the JwtSeurityTokenHandler, then this property will be set
+                var shortClaimTypeName = claim.Properties.ContainsKey(JwtSecurityTokenHandler.ShortClaimTypeProperty) ?
+                    claim.Properties[JwtSecurityTokenHandler.ShortClaimTypeProperty] : string.Empty;
+
+                // checking if claim in the identity (generated from id_token) has the same type as a claim retrieved from userinfo endpoint
+                JToken value;
+                var isClaimIncluded = user.TryGetValue(claim.Type, out value) || user.TryGetValue(shortClaimTypeName, out value);
+
+                // if a same claim exists (matching both type and value) both in id_token identity and userinfo response, remove the json entry from the userinfo response
+                if (isClaimIncluded && claim.Value.Equals(value.ToString(), StringComparison.Ordinal))
+                {
+                    if (!user.Remove(claim.Type))
+                    {
+                        user.Remove(shortClaimTypeName);
+                    }
+                }
+            }
+
+            // adding remaining unique claims from userinfo endpoint to the identity
+            foreach (var pair in user)
+            {
+                JToken value;
+                var claimValue = user.TryGetValue(pair.Key, out value) ? value.ToString() : null;
+                identity.AddClaim(new Claim(pair.Key, claimValue, ClaimValueTypes.String, jwt.Issuer));
+            }
+
+            return;
+        }
+
         private AuthenticationProperties GetPropertiesFromState(string state)
         {
             // assume a well formed query string: <a=b&>OpenIdConnectAuthenticationDefaults.AuthenticationPropertiesKey=kasjd;fljasldkjflksdj<&c=d>
