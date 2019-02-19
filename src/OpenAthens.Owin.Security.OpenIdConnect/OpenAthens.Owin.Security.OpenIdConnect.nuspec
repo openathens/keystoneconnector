@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>openathens</authors>
+    <owners></owners>
+    <copyright>© Microsoft Corporation and OpenAthens. All rights reserved.</copyright>
+    <license type="expression">Apache-2.0</license>
+    <projectUrl>https://github.com/openathens/keystoneconnector</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <title>$title$</title>
+    <description>Middleware that enables an application to use OpenIdConnect for authentication. Supports Authorization Code, Implicit and Hybrid flows.</description>
+    <tags>Authentication Identity Owin OpenIDConnect</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Net.Http" />
+      <frameworkAssembly assemblyName="System.Net.Http.WebRequest" />
+      <frameworkAssembly assemblyName="System.IdentityModel" />
+      <frameworkAssembly assemblyName="System.Runtime.Serialization" />
+    </frameworkAssemblies>
+    <dependencies>
+      <dependency id="Owin" version="1.0" />
+      <dependency id="Microsoft.IdentityModel.Logging" version="5.3.0" />
+      <dependency id="Microsoft.IdentityModel.Protocols" version="5.3.0" />
+      <dependency id="Microsoft.IdentityModel.Protocols.OpenIdConnect" version="5.3.0" />
+      <dependency id="Microsoft.IdentityModel.Tokens" version="5.3.0" />
+      <dependency id="Microsoft.Owin" version="4.0.0" />
+      <dependency id="Microsoft.Owin.Security" version="4.0.0" />
+      <dependency id="System.IdentityModel.Tokens.Jwt" version="5.3.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\OpenAthens.Owin.Security.OpenIdConnect.dll" target="lib\net45" />
+    <file src="bin\Release\OpenAthens.Owin.Security.OpenIdConnect.xml" target="lib\net45" />
+  </files>
+</package>
