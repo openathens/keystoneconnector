@@ -3,15 +3,15 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <authors>$authors$</authors>
-    <owners>$authors$</owners>
+    <authors>OpenAthens</authors>
+    <owners></owners>
     <copyright>© Microsoft Corporation and OpenAthens. All rights reserved.</copyright>
-    <licenseUrl>$licenseUrl$</licenseUrl>
-    <projectUrl>$projectUrl$</projectUrl>
+    <license type="expression">Apache-2.0</license>
+    <projectUrl>https://github.com/openathens/AspNetKatana</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <title>$title$</title>
-    <description>Middleware that enables an application to use OpenIdConnect for authentication.</description>
-    <tags>$tags$</tags>
+    <description>Middleware that enables an application to use OpenIdConnect for authentication. Supports Authorization Code, Implicit and Hybrid flows.</description>
+    <tags>Authentication Identity Owin OpenIDConnect</tags>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Net.Http" />
       <frameworkAssembly assemblyName="System.Net.Http.WebRequest" />
@@ -20,19 +20,17 @@
     </frameworkAssemblies>
     <dependencies>
       <dependency id="Owin" version="1.0" />
-      <dependency id="Microsoft.Owin" version="4.0.1" />
-      <dependency id="Microsoft.Owin.Security" version="4.0.1" />
-      <dependency id="System.IdentityModel.Tokens.Jwt" version="5.3.0" />
       <dependency id="Microsoft.IdentityModel.Logging" version="5.3.0" />
       <dependency id="Microsoft.IdentityModel.Protocols" version="5.3.0" />
       <dependency id="Microsoft.IdentityModel.Protocols.OpenIdConnect" version="5.3.0" />
       <dependency id="Microsoft.IdentityModel.Tokens" version="5.3.0" />
+      <dependency id="Microsoft.Owin" version="4.0.0" />
+      <dependency id="Microsoft.Owin.Security" version="4.0.0" />
+      <dependency id="System.IdentityModel.Tokens.Jwt" version="5.3.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="OpenAthens.Owin.Security.OpenIdConnect.dll" target="lib\net45" />
-    <file src="OpenAthens.Owin.Security.OpenIdConnect.pdb" target="lib\net45" />
-    <file src="OpenAthens.Owin.Security.OpenIdConnect.xml" target="lib\net45" />
-    <file src="src\**" target="src" />
+    <file src="bin\Release\OpenAthens.Owin.Security.OpenIdConnect.dll" target="lib\net45" />
+    <file src="bin\Release\OpenAthens.Owin.Security.OpenIdConnect.xml" target="lib\net45" />
   </files>
 </package>
