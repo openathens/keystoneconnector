@@ -3,11 +3,11 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <authors>OpenAthens</authors>
+    <authors>openathens</authors>
     <owners></owners>
     <copyright>© Microsoft Corporation and OpenAthens. All rights reserved.</copyright>
     <license type="expression">Apache-2.0</license>
-    <projectUrl>https://github.com/openathens/AspNetKatana</projectUrl>
+    <projectUrl>https://github.com/openathens/keystoneconnector</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <title>$title$</title>
     <description>Middleware that enables an application to use OpenIdConnect for authentication. Supports Authorization Code, Implicit and Hybrid flows.</description>
