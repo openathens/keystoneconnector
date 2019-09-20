@@ -1,4 +1,6 @@
-This repository is forked from the .NET Foundation [Katana project](https://github.com/aspnet/AspNetKatana), to provide a stand-alone Owin-based OpenId Connect library compatible with OpenAthens Keystone.
+This repository is forked from the .NET Foundation [Katana project](https://github.com/aspnet/AspNetKatana), to provide an Owin-based OpenID Connect library that is compatible with OpenAthens Keystone.
+
+The compiled library is available as the Nuget Package [OpenAthens.Owin.Security.OpenIdConnect](https://www.nuget.org/packages/OpenAthens.Owin.Security.OpenIdConnect), which is intended to be used as a drop-in replacement for Microsoft.Owin.Security.OpenIdConnect, which is not compatible with OpenAthens.
 
 Original documentation is available in the [Katana wiki](https://github.com/aspnet/AspNetKatana/wiki) and overview of [OWIN and Katana](https://docs.microsoft.com/en-us/aspnet/aspnet/overview/owin-and-katana/).
 
